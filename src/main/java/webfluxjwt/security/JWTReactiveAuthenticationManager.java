@@ -16,23 +16,23 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationManager {
+public class JWTReactiveAuthenticationManager implements ReactiveAuthenticationManager {
 
     private JWTVerifier jwtVerifier;
 
-    public static JwtReactiveAuthenticationManager getInstance(String secret, String apiId) throws UnsupportedEncodingException {
+    public static JWTReactiveAuthenticationManager getInstance(String secret, String apiId) throws UnsupportedEncodingException {
         Algorithm hmac256 = Algorithm.HMAC256(secret);
         JWTVerifier jwtVerifier = JWT.require(hmac256).withAudience(apiId).build();
-        return new JwtReactiveAuthenticationManager(jwtVerifier);
+        return new JWTReactiveAuthenticationManager(jwtVerifier);
     }
 
-    private JwtReactiveAuthenticationManager(JWTVerifier jwtVerifier) {
+    private JWTReactiveAuthenticationManager(JWTVerifier jwtVerifier) {
         this.jwtVerifier = jwtVerifier;
     }
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
-        JwtAuthentication jwtAuthentication = (JwtAuthentication) authentication;
+        JWTAuthentication jwtAuthentication = (JWTAuthentication) authentication;
 
         String token = jwtAuthentication.getToken();
 
@@ -61,6 +61,6 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
             authorities.add(new SimpleGrantedAuthority(p.toLowerCase()));
         }
 
-        return Mono.just(new JwtAuthentication(token, decodedJWT, authorities));
+        return Mono.just(new JWTAuthentication(token, decodedJWT, authorities));
     }
 }

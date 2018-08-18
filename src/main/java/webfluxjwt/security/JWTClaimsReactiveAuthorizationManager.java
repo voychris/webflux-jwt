@@ -6,11 +6,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import reactor.core.publisher.Mono;
 
-class JwtClaimsReactiveAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
+class JWTClaimsReactiveAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
     private String requiredAuthority;
 
-    JwtClaimsReactiveAuthorizationManager(String requiredAuthority) {
+    JWTClaimsReactiveAuthorizationManager(String requiredAuthority) {
         this.requiredAuthority = requiredAuthority;
     }
 

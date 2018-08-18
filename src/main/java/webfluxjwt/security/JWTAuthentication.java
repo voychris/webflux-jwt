@@ -6,16 +6,16 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public class JwtAuthentication extends AbstractAuthenticationToken {
+public class JWTAuthentication extends AbstractAuthenticationToken {
 
     private String token;
 
-    public JwtAuthentication(String token) {
+    public JWTAuthentication(String token) {
         super(null);
         this.token = token;
     }
 
-    public JwtAuthentication(String token, DecodedJWT decodedJWT, Collection<GrantedAuthority> authorities) {
+    public JWTAuthentication(String token, DecodedJWT decodedJWT, Collection<GrantedAuthority> authorities) {
         super(authorities);
         super.setDetails(decodedJWT.getSubject());
 

@@ -28,17 +28,16 @@ public class SecurityConfiguration {
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) throws UnsupportedEncodingException {
         AuthenticationWebFilter authenticationFilter = new AuthenticationWebFilter(
-            JwtReactiveAuthenticationManager.getInstance(secret, apiId));
-        authenticationFilter.setAuthenticationConverter(new JwtAuthenticationConverter());
+            JWTReactiveAuthenticationManager.getInstance(secret, apiId));
+        authenticationFilter.setAuthenticationConverter(new JWTAuthenticationConverter());
 
         return http
             .csrf().disable()
             .logout().disable()
-
             .securityMatcher(ServerWebExchangeMatchers.pathMatchers(securedPath))
             .addFilterAt(authenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .authorizeExchange()
-            .anyExchange().access(new JwtClaimsReactiveAuthorizationManager("api:read"))
+            .anyExchange().access(new JWTClaimsReactiveAuthorizationManager("api:read"))
             .and().build();
     }
 }

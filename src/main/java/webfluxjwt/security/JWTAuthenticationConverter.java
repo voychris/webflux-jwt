@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-public class JwtAuthenticationConverter implements Function<ServerWebExchange, Mono<Authentication>> {
+public class JWTAuthenticationConverter implements Function<ServerWebExchange, Mono<Authentication>> {
 
     @Override
     public Mono<Authentication> apply(ServerWebExchange serverWebExchange) {
@@ -18,13 +18,13 @@ public class JwtAuthenticationConverter implements Function<ServerWebExchange, M
         String authorization = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         if (authorization == null) {
-            return Mono.just(new JwtAuthentication(null));
+            return Mono.just(new JWTAuthentication(null));
         }
 
         String[] parts = authorization.split(" ");
 
         if (parts.length != 2) {
-            return Mono.just(new JwtAuthentication(null));
+            return Mono.just(new JWTAuthentication(null));
         }
 
         String scheme = parts[0];
@@ -33,9 +33,9 @@ public class JwtAuthenticationConverter implements Function<ServerWebExchange, M
         Pattern pattern = Pattern.compile("^Bearer$", Pattern.CASE_INSENSITIVE);
 
         if (pattern.matcher(scheme).matches()) {
-            return Mono.just(new JwtAuthentication(credentials));
+            return Mono.just(new JWTAuthentication(credentials));
         }
 
-        return Mono.just(new JwtAuthentication(null));
+        return Mono.just(new JWTAuthentication(null));
     }
 }
